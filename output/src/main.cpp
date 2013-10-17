@@ -75,7 +75,6 @@ int main() {
     for(int i=0; i <= n; i++) {
         memcpy(C, A, sizeof(int)*n);
         int hs = quicksort(C, left, right, i);
-        cout << i << ", " << hs << endl;
         if(hs < min) {
             min = hs;
             size = i;
