@@ -1,0 +1,53 @@
+#!/bin/bash
+
+username=$1
+dir=../../submissions/$username
+correct=0
+lang_cpp=false
+lang_java=false
+loc=""
+
+if [ -e $dir/main.cpp ] ; then
+  lang_cpp=true
+  loc="$dir/main.cpp"
+elif [ -e $dir/Main.java ] ; then
+  lang_java=true
+  loc="$dir/Main.java"
+else
+  echo "No source code found: $username"
+  exit
+fi
+
+if $lang_cpp ; then
+  g++ $loc
+  mv a.out $dir/a.out
+else
+  javac -Xlint $loc
+fi
+
+mkdir -p $dir/tmp
+
+for (( i = 1; i <= 100; i++ ))
+do
+  if $lang_cpp ; then
+    $dir/a.out < ../../input/$i.in > $dir/tmp/$i.out
+  else
+    java -cp $dir/ Main < ../../input/$i.in > $dir/tmp/$i.out
+  fi
+
+  if diff -Bb $dir/tmp/$i.out ../../output/$i.out > /dev/null ; then
+    echo "Case $i: OK"
+    correct=$((correct + 1))
+  else
+    echo "Case $i: Wrong Answer"
+  fi
+done
+
+echo
+echo "User: $username"
+echo "Correct: $correct%"
+
+rm -f $dir/*.out
+rm -f $dir/*.class
+#rm -f $dir/tmp/*.out
+

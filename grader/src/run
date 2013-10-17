@@ -1,0 +1,11 @@
+#!/bin/bash
+
+d=../../submissions/$1
+f=$d/$1.txt
+{ time ./runc $1 ; } &> $f
+
+enscript -p $d/$1.ps $f
+ps2pdf $d/$1.ps $d/$1.pdf
+
+rm -f $d/*.ps $d/*.txt
+

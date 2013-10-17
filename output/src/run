@@ -1,0 +1,10 @@
+#!/bin/bash
+
+javac Main.java
+
+for (( i = 1; i <= 100; i++))
+do
+  java Main < ../../input/$i.in > ../$i.out
+done
+
+rm -f *.class
